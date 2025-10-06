@@ -82,13 +82,20 @@ class StaticaTransformer(Transformer):
 
     def vs_scatter(self, items):
         # items: NAME (column to plot)
-        return {"kind": "vs_scatter", "col": items[0]}
+        return {"kind": "scatter"}
 
     def plot_stmt(self, items):
-        dataset = items[0]
-        col = items[1]
-        kind = items[2]
-        return {"cmd": "plot", "dataset": dataset, "col": col, "kind": kind}
+        x = items[0]
+        if len(items) == 3:
+            y = items[1]
+            kind = items[2]["kind"]  # because hist/box/scatter returns a dict
+        else:
+            y = None
+            kind = items[1]["kind"]
+
+        return {"cmd": "plot", "x": x, "y": y, "kind": kind}
+
+
 
     def conclude_stmt(self, items):
         name = items[0]
@@ -100,9 +107,16 @@ class StaticaTransformer(Transformer):
     def ask_table_stmt(self, items):
         return {"cmd": "ask_table", "key": items[0]}
 
-def parse_program(text: str):
+def parse_program(text):
     tree = parser.parse(text)
     transformer = StaticaTransformer()
-    cmds = transformer.transform(tree)
-    # transformer returns a list-like tree; ensure a flat list
-    return list([c for c in cmds if c is not None])
+    result = transformer.transform(tree)
+    
+    # Return list of children (statements)
+    if isinstance(result, list):
+        return result
+    elif hasattr(result, 'children'):
+        return [c for c in result.children if c is not None]
+    else:
+        return [result]
+

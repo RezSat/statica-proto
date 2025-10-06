@@ -1,5 +1,6 @@
 // Statica grammar (Lark)
 start: statement*
+
 statement: assign
          | load_stmt
          | describe_stmt
@@ -25,12 +26,12 @@ target: NAME "." NAME
 regress_stmt: "regress" NAME "~" term ( "+" term )* "on" NAME
 term: NAME
 
-plot_stmt: "plot" NAME "." NAME plot_kind
+plot_stmt: "plot" var ("vs" var)? plot_kind
+
 plot_kind: "histogram" ["bins" "=" NUMBER] -> hist
-         | "box"                              -> box
-         | "scatter"                         -> scatter
-         | "line"                            -> line
-         | "vs" NAME "scatter"               -> vs_scatter
+         | "box" -> box
+         | "scatter" -> scatter
+         | "line" -> line
 
 conclude_stmt: "conclude" NAME ["alpha" "=" NUMBER]
 ask_table_stmt: "ask_table" STRING
@@ -38,6 +39,7 @@ ask_table_stmt: "ask_table" STRING
 COMMENT: /#.*/
 
 NAME: /[a-zA-Z_][a-zA-Z0-9_]*/
+?var: NAME ("." NAME)*
 STRING: /"[^"]*"/
 NUMBER: /[0-9]+(\.[0-9]+)?/
 
