@@ -1,0 +1,8 @@
+pandas
+numpy
+scipy
+statsmodels
+matplotlib
+lark-parser
+jinja2
+tabulate

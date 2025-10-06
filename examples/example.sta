@@ -1,0 +1,17 @@
+# Example Statica workflow
+data = load "examples/study.csv" with header
+
+describe data
+
+t1 = test ttest mean of data.score against 75
+
+m1 = regress score ~ age + group on data
+
+plot data.score histogram bins=10
+plot data.age vs data.score scatter
+
+conclude t1 alpha=0.05
+conclude m1 alpha=0.05
+
+# If Statica needed a lookup from a table you would call:
+# ttable = ask_table "t_critical"
