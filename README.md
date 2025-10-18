@@ -59,7 +59,7 @@ P > |t|: 0.001
 1. **Clone the Repository**
 
 ```bash
-git clone https://github.com/your-username/statica.git
+git clone https://github.com/HirulaAbesignha/statica-proto.git
 cd statica
 ```
 
