@@ -7,3 +7,12 @@ from .exceptions import (
     StatisticalAssumptionError
 
 )
+
+__all__ = [
+    "Context",
+    "StaticaError",
+    "SyntaxError",
+    "ValidationError",
+    "RuntimeError",
+    "StatisticalAssumptionError",
+]
