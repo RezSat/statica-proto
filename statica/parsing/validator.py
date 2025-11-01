@@ -8,10 +8,12 @@ The validator uses the execution context to verify references to datasets or var
 """
 
 from typing import List, Dict, Any
+from lark import Visitor
 from ..core.context import Context
 from ..core.exceptions import ValidationError
 
-class ASTValidator:
+
+class ASTValidator(Visitor):
     """Validator for Statica AST.
 
     Performs semantic checks on the parsed AST to ensure validity.
@@ -39,30 +41,34 @@ class ASTValidator:
             ValidationError: If semantic issues are found.
         """
         for stmt in ast:
-            print(stmt.children[0])
-            
+            cmd = stmt.children[0].get('cmd')
+            method_name = f'_validate_{cmd}'
+            if cmd:
+                method = getattr(self, method_name)
+                method(stmt)
 
+    def _validate_assign(self, stmt: Dict[str, Any]) -> None:
+        var_name = stmt.children[0].get('name')
+        
 
-    def _validate_load(self, cmd: Dict[str, Any]) -> None:
+    def _validate_load(self, stmt: Dict[str, Any]) -> None:
         pass
 
-    def _validate_describe(self, cmd: Dict[str, Any]) -> None:
+    def _validate_describe(self, stmt: Dict[str, Any]) -> None:
         pass
 
-    def _validate_assign(self, cmd: Dict[str, Any]) -> None:
+    def _validate_test(self, stmt: Dict[str, Any]) -> None:
         pass
 
-    def _validate_ttest(self, cmd: Dict[str, Any]) -> None:
+    def _validate_regress(self, stmt: Dict[str, Any]) -> None:
         pass
 
-    def _validate_regress(self, cmd: Dict[str, Any]) -> None:
+    def _validate_plot(self, stmt: Dict[str, Any]) -> None:
         pass
 
-    def _validate_plot(self, cmd: Dict[str, Any]) -> None:
+    def _validate_conclude(self, stmt: Dict[str, Any]) -> None:
         pass
 
-    def _validate_conclude(self, cmd: Dict[str, Any]) -> None:
+    def _validate_ask_table(self, stmt: Dict[str, Any]) -> None:
         pass
 
-    def _validate_ask_table(self, cmd: Dict[str, Any]) -> None:
-        pass

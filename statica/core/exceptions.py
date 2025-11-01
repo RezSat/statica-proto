@@ -8,7 +8,16 @@ class StaticaError(Exception):
     """Base exception for all Statica-related errors."""
 
 class SyntaxError(StaticaError):
-    """Raised for syntax errors in the DSL input."""
+    def __init__(self, value, line, column):
+       self.value = value
+       self.line = line
+       self.column = column
+
+    def __repr__(self):
+       return (f"Syntax Error: Invalid Syntax '{self.value}' at line {self.line}, column {self.column}.")
+
+    def __str__(self):
+       return (f"Syntax Error: Invalid Syntax '{self.value}' at line {self.line}, column {self.column}.")
 
 class ValidationError(StaticaError):
     """Raised for semantic validation failures in the AST."""

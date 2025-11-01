@@ -8,9 +8,10 @@ and transforms into an ASTfor execution.
 The grammar is loaded from 'grammar/statica.lark' relative to this file.
 """
 
-from lark import Lark, Transformer, Token, Tree, v_args
+from lark import Lark, Transformer, Token, Tree, v_args, UnexpectedToken, UnexpectedCharacters
 from pathlib import Path
 from typing import List, Dict, Any, Optional
+from statica.core import exceptions as ex
 
 GRAMMAR_PATH = Path(__file__).parent / "grammar" / "statica.lark"
 GRAMMAR = GRAMMAR_PATH.read_text()
@@ -147,10 +148,16 @@ class Parser:
         Raises:
             lark.exceptions.LarkError: If parsing fails due to syntax errors.
         """
-        tree: Tree = self.lark.parse(text)
-        transformer = StaticaTransformer()
-        result = transformer.transform(tree)
-        # Ensure result is a list of commands
-        if not isinstance(result, list):
-            result = [result] if result is not None else []
+        result = None
+        try:
+            tree: Tree = self.lark.parse(text)
+            transformer = StaticaTransformer()
+            result = transformer.transform(tree)
+            # Ensure result is a list of commands
+            if not isinstance(result, list):
+                result = [result] if result is not None else []
+        except UnexpectedToken as e:
+            print(ex.SyntaxError(e.token.value, e.line, e.column))
+        except UnexpectedCharacters as e:
+            print(ex.SyntaxError(e.token.value, e.line, e.column))
         return result
