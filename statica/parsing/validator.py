@@ -38,105 +38,31 @@ class ASTValidator:
         Raises:
             ValidationError: If semantic issues are found.
         """
-        for cmd in ast:
-            cmd_type = cmd.get("cmd")
-            if cmd_type == "load":
-                self._validate_load(cmd)
-            elif cmd_type == "describe":
-                self._validate_describe(cmd)
-            elif cmd_type == "assign":
-                self._validate_assign(cmd)
-            elif cmd_type == "ttest":
-                self._validate_ttest(cmd)
-            elif cmd_type == "regress":
-                self._validate_regress(cmd)
-            elif cmd_type == "plot":
-                self._validate_plot(cmd)
-            elif cmd_type == "conclude":
-                self._validate_conclude(cmd)
-            elif cmd_type == "ask_table":
-                self._validate_ask_table(cmd)
-            else:
-                raise ValidationError(f"Unknown command type: {cmd_type}")
+        for stmt in ast:
+            print(stmt.children[0])
+            
+
 
     def _validate_load(self, cmd: Dict[str, Any]) -> None:
-        if not isinstance(cmd.get("file"), str) or not cmd["file"]:
-            raise ValidationError("Load command requires a non-empty string filename.")
-        if not isinstance(cmd.get("header"), bool):
-            raise ValidationError("Header option must be a boolean.")
+        pass
 
     def _validate_describe(self, cmd: Dict[str, Any]) -> None:
-        dataset = cmd.get("dataset")
-        if not isinstance(dataset, str) or not dataset:
-            raise ValidationError("Describe command requires a dataset name.")
-        if not self.context.dataset_exists(dataset):
-            raise ValidationError(f"Dataset '{dataset}' does not exist.")
+        pass
 
     def _validate_assign(self, cmd: Dict[str, Any]) -> None:
-        name = cmd.get("name")
-        if not isinstance(name, str) or not name:
-            raise ValidationError("Assign command requires a variable name.")
-        expr = cmd.get("expr")
-        if not expr:
-            raise ValidationError("Assign command requires an expression.")
-        # Recursively validate the expression if it's a command
-        if isinstance(expr, dict) and "cmd" in expr:
-            self.validate([expr])  # Validate nested command
+        pass
 
     def _validate_ttest(self, cmd: Dict[str, Any]) -> None:
-        target = cmd.get("target")
-        if not isinstance(target, dict) or "dataset" not in target or "column" not in target:
-            raise ValidationError("Ttest command requires a valid target (dataset.column).")
-        dataset = target["dataset"]
-        if not self.context.dataset_exists(dataset):
-            raise ValidationError(f"Dataset '{dataset}' does not exist for ttest.")
-        by = cmd.get("by")
-        against = cmd.get("against")
-        if by and not isinstance(by, str):
-            raise ValidationError("Ttest 'by' must be a string group name.")
-        if against is not None and not isinstance(against, (int, float)):
-            raise ValidationError("Ttest 'against' must be a number.")
+        pass
 
     def _validate_regress(self, cmd: Dict[str, Any]) -> None:
-        dep = cmd.get("dep")
-        predictors = cmd.get("predictors")
-        dataset = cmd.get("dataset")
-        if not isinstance(dep, str) or not dep:
-            raise ValidationError("Regress command requires a dependent variable name.")
-        if not isinstance(predictors, list) or not all(isinstance(p, str) for p in predictors):
-            raise ValidationError("Regress predictors must be a list of strings.")
-        if not isinstance(dataset, str) or not dataset:
-            raise ValidationError("Regress command requires a dataset name.")
-        if not self.context.dataset_exists(dataset):
-            raise ValidationError(f"Dataset '{dataset}' does not exist for regress.")
+        pass
 
     def _validate_plot(self, cmd: Dict[str, Any]) -> None:
-        x = cmd.get("x")
-        y = cmd.get("y")
-        kind = cmd.get("kind")
-        if not isinstance(x, (str, list)) or not x:
-            raise ValidationError("Plot command requires a valid x variable.")
-        if y and not isinstance(y, (str, list)):
-            raise ValidationError("Plot y must be a valid variable if provided.")
-        if kind not in ["histogram", "box", "scatter", "line"]:
-            raise ValidationError(f"Invalid plot kind: {kind}")
-        if kind == "histogram":
-            bins = cmd.get("bins")
-            if bins is not None and not isinstance(bins, int):
-                raise ValidationError("Histogram bins must be an integer.")
-        # Assuming x/y are var paths; could add dataset existence check if parsed as dataset.column
+        pass
 
     def _validate_conclude(self, cmd: Dict[str, Any]) -> None:
-        name = cmd.get("name")
-        alpha = cmd.get("alpha")
-        if not isinstance(name, str) or not name:
-            raise ValidationError("Conclude command requires a variable name.")
-        if not self.context.var_exists(name):
-            raise ValidationError(f"Variable '{name}' does not exist for conclude.")
-        if not isinstance(alpha, (int, float)) or not (0 < alpha < 1):
-            raise ValidationError("Alpha must be a float between 0 and 1.")
+        pass
 
     def _validate_ask_table(self, cmd: Dict[str, Any]) -> None:
-        key = cmd.get("key")
-        if not isinstance(key, str) or not key:
-            raise ValidationError("Ask_table command requires a non-empty string key.")
+        pass
