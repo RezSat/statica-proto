@@ -33,10 +33,14 @@ class StaticaTransformer(Transformer):
 
     def NUMBER(self, token: Token) -> float:
         return float(token)
+    
+    def header_opt(self,*args):
+        #When "with header" is matched returns True
+        return True
 
     @v_args(inline=True)
     def load_stmt(self, filename: str, header_opt: Optional[str] = None) -> Dict[str, Any]:
-        return {"cmd": "load", "file": filename, "header": header_opt == "header"}
+        return {"cmd": "load", "file": filename, "header": header_opt == True}
 
     @v_args(inline=True)
     def describe_stmt(self, dataset: str) -> Dict[str, Any]:
@@ -146,7 +150,8 @@ class Parser:
             A list of dictionaries representing the AST commands.
 
         Raises:
-            lark.exceptions.LarkError: If parsing fails due to syntax errors.
+            For now prints the syntax errors from core.exceptions instead of raising
+            (This needs beter implementation)
         """
         result = None
         try:

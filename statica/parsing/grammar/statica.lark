@@ -17,7 +17,8 @@ expression: load_stmt -> expr_load
           | regress_stmt -> expr_regress
           | NAME          -> expr_name
 
-load_stmt: "load" STRING ["with" "header"]
+load_stmt: "load" STRING [header_opt]
+header_opt: "with" "header"
 describe_stmt: "describe" NAME
 
 test_stmt: "test" "ttest" "mean" "of" target ( "by" NAME )? ( "against" NUMBER )?
