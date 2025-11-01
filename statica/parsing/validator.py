@@ -68,6 +68,7 @@ class ASTValidator(Visitor):
         if isinstance(stmt, dict):
             if isinstance(stmt.get("file"), str) or stmt["file"]:
                 try:
+                    # This obviously needs better path testing method, this is just good unless given the full path
                     open(stmt['file'], 'r')
                 except Exception as e:
                     raise FileNotFoundError("Coudn't locate the file:", stmt['file'])

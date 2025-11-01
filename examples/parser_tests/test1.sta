@@ -1,2 +1,2 @@
 # Example Statica workflow
-data = load "study.csv" with header
+data = load "C:\Users\Administrator\Documents\statica-proto\examples\study.csv" with header

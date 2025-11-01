@@ -8,7 +8,7 @@ from statica.parsing import Parser
 from statica.parsing import ASTValidator
 from statica.core import Context
 
-source = open(r'C:\Users\Administrator\Documents\statica-proto\examples\example.sta', 'r').read()
+source = open(r'C:\Users\Administrator\Documents\statica-proto\examples\parser_tests\test1.sta', 'r').read()
 
 parser = Parser()
 context = Context()
