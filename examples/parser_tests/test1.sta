@@ -1,4 +1,2 @@
 # Example Statica workflow
 data = load "study.csv" with header
-
-describe data

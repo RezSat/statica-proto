@@ -1,6 +1,4 @@
 """
-This will deprecated.
-
 AST Validator for Statica DSL.
 
 This module provides semantic validation for the Abstract Syntax Tree (AST)
@@ -11,7 +9,7 @@ The validator uses the execution context to verify references to datasets or var
 """
 
 from typing import List, Dict, Any
-from lark import Visitor
+from lark import Visitor, Tree
 from ..core.context import Context
 from ..core.exceptions import ValidationError
 
@@ -44,7 +42,12 @@ class ASTValidator(Visitor):
             ValidationError: If semantic issues are found.
         """
         for stmt in ast:
-            cmd = stmt.children[0].get('cmd')
+            if isinstance(stmt, dict):
+                cmd = stmt.get('cmd')
+            elif isinstance(stmt, Tree):
+                cmd = stmt.children[0].get('cmd')
+            else:
+                raise ValueError("Unrecognized statement type received")
             method_name = f'_validate_{cmd}'
             if cmd:
                 method = getattr(self, method_name)
@@ -52,10 +55,28 @@ class ASTValidator(Visitor):
 
     def _validate_assign(self, stmt: Dict[str, Any]) -> None:
         var_name = stmt.children[0].get('name')
+        if not var_name:
+            print(ValidationError("Variable name is missing"))
+        next_smt = stmt.children[0].get('expr')
+        if not next_smt:
+            print(ValidationError("Expression to assign is missing"))
+        if isinstance(next_smt, dict) and "cmd" in next_smt:
+            self.validate([next_smt]) # nested validation
         
 
     def _validate_load(self, stmt: Dict[str, Any]) -> None:
-        pass
+        if isinstance(stmt, dict):
+            if isinstance(stmt.get("file"), str) or stmt["file"]:
+                try:
+                    open(stmt['file'], 'r')
+                except Exception as e:
+                    raise FileNotFoundError("Coudn't locate the file:", stmt['file'])
+            else:
+                raise ValidationError("Load command requires a non-empty string filename.")
+            if not isinstance(stmt.get("header"), bool):
+                raise ValidationError("Header option must be a boolean. (use `with header` or don't)")
+        else:
+            raise NotImplementedError("Load statment recieved non dict object - probably a lark Tree")
 
     def _validate_describe(self, stmt: Dict[str, Any]) -> None:
         pass
