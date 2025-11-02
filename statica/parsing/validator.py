@@ -67,6 +67,7 @@ class ASTValidator(Visitor):
     def _validate_load(self, stmt: Dict[str, Any]) -> None:
         if isinstance(stmt, dict):
             if isinstance(stmt.get("file"), str) or stmt["file"]:
+                # move this into a single utility function
                 base_dir = self.context.base_dir
                 full_path = os.path.join(base_dir, stmt['file'])
                 try:
