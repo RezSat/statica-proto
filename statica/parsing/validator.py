@@ -7,7 +7,7 @@ invalid command parameters, and type mismatches before execution.
 
 The validator uses the execution context to verify references to datasets or variables.
 """
-
+import os
 from typing import List, Dict, Any
 from lark import Visitor, Tree
 from ..core.context import Context
@@ -67,11 +67,12 @@ class ASTValidator(Visitor):
     def _validate_load(self, stmt: Dict[str, Any]) -> None:
         if isinstance(stmt, dict):
             if isinstance(stmt.get("file"), str) or stmt["file"]:
+                base_dir = self.context.base_dir
+                full_path = os.path.join(base_dir, stmt['file'])
                 try:
-                    # This obviously needs better path testing method, this is just good unless given the full path
-                    open(stmt['file'], 'r')
+                    open(full_path, 'r')
                 except Exception as e:
-                    raise FileNotFoundError("Coudn't locate the file:", stmt['file'])
+                    raise FileNotFoundError("Coudn't locate the file:", full_path)
             else:
                 raise ValidationError("Load command requires a non-empty string filename.")
             if not isinstance(stmt.get("header"), bool):

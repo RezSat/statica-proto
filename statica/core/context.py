@@ -17,6 +17,11 @@ class Context:
         """Initialize the context with empty state."""
         self.env: Dict[str, Any] = {}  # Variables, datasets, results
         self.user_tables: Dict[str, Any] = {}  # User-provided table values
+        self.base_dir: str = None
+
+    def set_base_dir(self, base_dir):
+        self.base_dir = base_dir
+        logger.info(f"Set base directory of current file {base_dir}")
 
     def set_var(self, name: str, value: Any) -> None:
         """Set a variable in the environment.

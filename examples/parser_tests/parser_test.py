@@ -8,10 +8,12 @@ from statica.parsing import Parser
 from statica.parsing import ASTValidator
 from statica.core import Context
 
-source = open(r'C:\Users\Administrator\Documents\statica-proto\examples\parser_tests\test1.sta', 'r').read()
+source_file = r'C:\Users\Administrator\Documents\statica-proto\examples\parser_tests\test1.sta'
+source = open(source_file, 'r').read()
 
 parser = Parser()
 context = Context()
+context.set_base_dir(os.path.dirname(os.path.abspath(source_file)))
 ast = parser.parse(source)
 #print(ast)
 validator = ASTValidator(context)
