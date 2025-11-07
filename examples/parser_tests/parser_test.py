@@ -12,7 +12,7 @@ source_file = r'C:\Users\Administrator\Documents\statica-proto\examples\parser_t
 source = open(source_file, 'r').read()
 
 parser = Parser()
-context = Context() 
+context = Context()
 context.set_base_dir(os.path.dirname(os.path.abspath(source_file)))
 ast = parser.parse(source)
 #print(ast)
