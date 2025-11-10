@@ -53,12 +53,13 @@ class Interpreter(visitors.Interpreter):
         full_path = os.path.join(base_dir, file)
         # later add support for additional files and 
         # methods to try handling unknown formats with "tried-our-best" approach.:)
-        data = pd.read_csv(full_path, header=0 if header else "infer")
+        data = pd.read_csv(full_path, header=0 if header else "infer") # code-snippet from the original codebase
         return data
     
     def describe_stmt(self, var_name):
         #decribe the dataset with freq, mean, min, max like basic pandas describe stuff.
         #future maybe add a feature to show in a gui as well instead of just printing to the console.
         df = self.context.get_var(var_name)
+        # code-snippet from the original codebase
         desc = df.describe(include='all').T.reset_index()
         print(tabulate(desc, headers="keys", tablefmt="github", showindex=False))
