@@ -7,6 +7,7 @@ sys.path.insert(0, folder_to_add)
 from statica.parsing import Parser
 from statica.parsing import ASTValidator
 from statica.core import Context
+from statica.core import Interpreter
 
 source_file = r'C:\Users\Administrator\Documents\statica-proto\examples\parser_tests\test1.sta'
 source = open(source_file, 'r').read()
@@ -19,4 +20,7 @@ ast = parser.parse(source)
 validator = ASTValidator(context)
 validator.validate(ast) # Non-Destructive Process (Meaning there will be no manipulation of the ast)
 
-print(type(ast))
+
+interpreter = Interpreter(context)
+interpreter.visit(ast[0])
+

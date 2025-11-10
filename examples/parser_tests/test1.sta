@@ -1,2 +1,4 @@
 # Example Statica workflow
 data = load "C:\Users\Administrator\Documents\statica-proto\examples\study.csv" with header
+
+describe data

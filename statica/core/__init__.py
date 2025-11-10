@@ -7,6 +7,7 @@ from .exceptions import (
     StatisticalAssumptionError
 
 )
+from .interpreter import Interpreter
 
 __all__ = [
     "Context",
@@ -15,4 +16,5 @@ __all__ = [
     "ValidationError",
     "RuntimeError",
     "StatisticalAssumptionError",
+    "Interpreter"
 ]
