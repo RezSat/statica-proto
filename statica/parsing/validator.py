@@ -68,6 +68,7 @@ class ASTValidator(Visitor):
         if isinstance(stmt, dict):
             if isinstance(stmt.get("file"), str) or stmt["file"]:
                 # move this into a single utility function
+                # used in the interpreter and validator
                 base_dir = self.context.base_dir
                 full_path = os.path.join(base_dir, stmt['file'])
                 try:

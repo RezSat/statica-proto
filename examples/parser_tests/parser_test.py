@@ -22,5 +22,4 @@ validator.validate(ast) # Non-Destructive Process (Meaning there will be no mani
 
 
 interpreter = Interpreter(context)
-interpreter.visit(ast[0])
-
+interpreter.interpret(ast)
