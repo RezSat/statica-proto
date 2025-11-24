@@ -85,7 +85,8 @@ class ASTValidator(Visitor):
     def _validate_describe(self, stmt: Dict[str, Any]) -> None:
         pass
 
-    def _validate_test(self, stmt: Dict[str, Any]) -> None:
+    def _validate_ttest(self, stmt: Dict[str, Any]) -> None:
+        # ttest or test in general, this neeeds more clarification.
         pass
 
     def _validate_regress(self, stmt: Dict[str, Any]) -> None:

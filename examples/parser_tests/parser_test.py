@@ -16,7 +16,7 @@ parser = Parser()
 context = Context()
 context.set_base_dir(os.path.dirname(os.path.abspath(source_file)))
 ast = parser.parse(source)
-#print(ast)
+print(ast)
 validator = ASTValidator(context)
 validator.validate(ast) # Non-Destructive Process (Meaning there will be no manipulation of the ast)
 

@@ -13,6 +13,9 @@ import logging
 import os
 from lark import visitors
 import pandas as pd
+import numpy as np
+import scipy.stats as stats
+import matplotlib.pyplot as plt
 from tabulate import tabulate
 
 from statica.core.exceptions import RuntimeError
@@ -42,9 +45,22 @@ class Interpreter(visitors.Interpreter):
             # later maybe describe can handle more than just a dataset.
             self.describe_stmt(current_child['dataset'])
 
+
     def assign(self, var_name, expr):
-        loaded_data = self.load_stmt(file=expr['file'], header=expr['header'])
-        self.context.set_var(var_name, loaded_data)
+        """
+        This code should be updated and take into statement most part of 
+        this can be just go inside the statement and recursively code instead.
+        Plus assign should be able to handle many other types of expression in the future.
+        """
+        if isinstance(expr, dict) and 'cmd' in expr:
+            ctype = expr['cmd']
+            if ctype == "load":
+                loaded_data = self.load_stmt(file=expr['file'], header=expr['header'])
+                self.context.set_var(var_name, loaded_data)
+            elif ctype == "ttest":
+                #code below if from the original codebase no change done
+                #except how the variable data is obtianed (we use context manager)
+                self.context.set_var(var_name, expr)
 
     def load_stmt(self, file: str, header:bool):
         # move this into a single utility function

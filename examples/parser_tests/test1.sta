@@ -2,3 +2,5 @@
 data = load "C:\Users\Administrator\Documents\statica-proto\examples\study.csv" with header
 
 describe data
+
+t1 = test ttest mean of data.score against 75
