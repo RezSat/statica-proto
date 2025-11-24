@@ -6,6 +6,7 @@ Takes AST, Context
 There might be a better way to do visiting with builtins
 from Lark, but I don't really get the documentation therefore
 I willl stick with what i understood at the moment.
+Feel free to optimize.
 """
 
 import logging
